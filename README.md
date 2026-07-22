@@ -1,10 +1,3 @@
-# README formaté pour GitHub - Copier-coller directement ✅
-
----
-
-Créez un fichier `README.md` et copiez tout ce qui suit :
-
-```markdown
 # OPENLABSCHOOL - SCHOOL MANAGEMENT SAAS PLATFORM
 
 > Multi-tenant SaaS solution serving 2,000+ users across 15+ educational institutions in West Africa
@@ -46,7 +39,6 @@ This is a **technical showcase repository** demonstrating the architecture and d
 - [Metrics & Impact](#metrics--impact)
 - [Roadmap](#roadmap)
 - [Screenshots](#screenshots)
-- [Contact](#contact)
 
 ---
 
@@ -138,7 +130,28 @@ A **lightweight, affordable SaaS platform** tailored for African educational ins
     │  (Render Managed)    │
     │  Daily Auto Backup   │
     └──────────────────────┘
+    
+    ┌──────────────────────┐
+    │  Cloudinary          │
+    │  (Media Storage)     │
+    │  - Student photos    │
+    │  - Documents/PDFs    │
+    └──────────────────────┘
+    
+    ┌──────────────────────┐
+    │  Anymail + Brevo     │
+    │  (Email Service)     │
+    └──────────────────────┘
+    
+    ┌──────────────────────┐
+    │  Fedapay             │
+    │  (Payment Gateway)   │
+    │  - Mobile Money      │
+    │  - Card payments     │
+    └──────────────────────┘
 ```
+
+---
 
 ### Future Architecture (v2.0 - In Development)
 
@@ -152,7 +165,15 @@ A **lightweight, affordable SaaS platform** tailored for African educational ins
    ┌───▼──┐   ┌──▼───┐  ┌───▼────┐
    │Auth  │   │Core  │  │Finance │
    │API   │   │API   │  │API     │
-   └──────┘   └──────┘  └────────┘
+   └──┬───┘   └──┬───┘  └───┬────┘
+      │          │          │
+      └──────────┴──────────┴────────┐
+                                     │
+                        ┌────────────▼──────────┐
+                        │   Shared PostgreSQL   │
+                        │   (with row-level     │
+                        │    security)          │
+                        └───────────────────────┘
 
 ┌─────────────────────────────────────────────┐
 │     React + TypeScript Frontend (SPA)      │
@@ -321,14 +342,37 @@ AnneeScolaire (School Year)
 ├── active (boolean, only one active per school)
 └── created_by (FK → CustomUser)
 
+Cycle (e.g., Primary, Secondary)
+├── id
+├── etablissement_id (FK)
+└── nom
+
+Niveau (e.g., 6th Grade, CM2)
+├── id
+├── etablissement_id (FK)
+├── cycle_id (FK)
+├── nom
+└── ordre_global (sorting order)
+
+Classe (Class/Section)
+├── id
+├── etablissement_id (FK)
+├── niveau_id (FK → Niveau)
+├── annee_scolaire_id (FK → AnneeScolaire)
+├── nom (e.g., "A", "B", "C")
+└── UNIQUE(nom, niveau, annee_scolaire, etablissement)
+
 -- Student Management
 Eleve (Student)
 ├── id
 ├── user_id (OneToOne → CustomUser)
 ├── etablissement_id (FK)
 ├── matricule (student ID, auto-generated "ELV12345")
+├── matricule_saisi (manual override if provided)
+├── cycle_id (FK → Cycle)
 ├── date_naissance, lieu_naissance
 ├── sexe (M|F)
+├── nationalite
 ├── photo (Cloudinary)
 └── code_parent (6-digit code for parent linkage)
 
@@ -338,7 +382,33 @@ Inscription (Enrollment)
 ├── classe_id (FK → Classe)
 ├── annee_scolaire_id (FK → AnneeScolaire)
 ├── etablissement_id (FK)
+├── date_inscription
 └── UNIQUE(eleve, annee_scolaire)
+
+-- Parent Management
+Parent
+├── id
+├── user_id (OneToOne → CustomUser)
+├── etablissement_id (FK)
+├── enfants (ManyToMany → Eleve)
+└── telephone
+
+-- Teacher Management
+Enseignant (Teacher)
+├── id
+├── user_id (OneToOne → CustomUser)
+├── etablissement_id (FK)
+├── statut (permanent|contractual)
+├── grade
+└── telephone
+
+AffectationEnseignant (Teacher Assignment)
+├── id
+├── enseignant_id (FK → Enseignant)
+├── classe_id (FK → Classe)
+├── matiere_id (FK → Matiere)
+├── role (PP=Prof Principal | CO=Co-teacher)
+└── volume_horaire_hebdo
 ```
 
 ### Critical Indexes (Performance Optimization)
@@ -438,7 +508,7 @@ def get_students(request):
 - ✅ **Email-based login** (no usernames)
 - ✅ **JWT tokens** for API (REST Framework SimpleJWT)
 - ✅ **Role-based permissions** (6 distinct roles)
-- ✅ **Password validators** (Django defaults)
+- ✅ **Password validators** (Django defaults: length, common passwords, numeric-only)
 - ✅ **Forced password change** for parent accounts on first login
 - ❌ **2FA** (not yet implemented, roadmap item)
 
@@ -446,16 +516,16 @@ def get_students(request):
 
 - ✅ **HTTPS enforced** (Render SSL/TLS)
 - ✅ **CSRF protection** (Django middleware)
-- ✅ **SQL injection prevention** (Django ORM)
+- ✅ **SQL injection prevention** (Django ORM parameterized queries)
 - ✅ **XSS protection** (Django template auto-escaping)
-- ✅ **Database encryption at rest** (Render managed)
-- ✅ **Secrets management** (environment variables)
-- ❌ **Rate limiting** (planned for v2.0)
+- ✅ **Database encryption at rest** (Render managed PostgreSQL)
+- ✅ **Secrets management** (environment variables via python-decouple)
+- ❌ **Rate limiting** (not configured, planned for v2.0)
 
 ### Audit & Compliance
 
-- ✅ **Audit logs** for critical operations
-- ✅ **Daily automated backups** (7-day retention)
+- ✅ **Audit logs** for critical operations (enrollment, grade changes, payments)
+- ✅ **Daily automated backups** (Render PostgreSQL, 7-day retention)
 - ✅ **GDPR-ready** (data export, deletion on request)
 
 ---
@@ -476,9 +546,9 @@ def get_students(request):
 
 ### Optimization Strategies Implemented
 
-#### 1. Database Query Optimization
+#### 1. **Database Query Optimization**
 
-**Problem:** N+1 queries on student list page.
+**Problem:** N+1 queries on student list page (1 query per student for class info).
 
 **Solution:**
 ```python
@@ -497,9 +567,9 @@ students = Eleve.objects.filter(etablissement=etab).select_related(
 
 ---
 
-#### 2. Pre-Computed Statistics
+#### 2. **Pre-Computed Statistics**
 
-**Problem:** Real-time average calculation too slow.
+**Problem:** Real-time average calculation too slow (1000+ grades per class).
 
 **Solution:**
 ```python
@@ -520,10 +590,11 @@ def update_stats(sender, instance, **kwargs):
 
 ---
 
-#### 3. Strategic Database Indexes
+#### 3. **Strategic Database Indexes**
 
 ```python
 class Eleve(models.Model):
+    # ...
     class Meta:
         indexes = [
             models.Index(fields=['etablissement', 'cycle']),
@@ -535,6 +606,17 @@ class Eleve(models.Model):
 
 ---
 
+#### 4. **Static File Compression**
+
+```python
+# settings.py
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+```
+
+**Impact:** CSS/JS files reduced by 60%, faster page loads.
+
+---
+
 ## 💪 Technical Challenges Solved
 
 ### Challenge 1: Multi-Tenant Data Isolation
@@ -542,13 +624,26 @@ class Eleve(models.Model):
 **Problem:**  
 Ensuring École A cannot access École B's student data required injecting `etablissement_id` into **every query** across 15 apps and 100+ views.
 
-**Risk:** One missed filter = critical data leak.
+**Risk:**  
+One missed filter = critical data leak.
 
 **Solution:**
 
-1. **Middleware injection** - Every request gets `request.etablissement`
-2. **Rigorous code review** - Every model query must filter by `etablissement`
-3. **Testing protocol** - Every feature tested on 2+ demo schools
+1. **Middleware injection:**
+   ```python
+   # Every request gets request.etablissement
+   class EtablissementInjectionMiddleware:
+       # ... (see Multi-Tenant section)
+   ```
+
+2. **Rigorous code review:**
+   - Every model query **must** filter by `etablissement`
+   - Automated tests check cross-tenant queries return empty
+   
+3. **Testing protocol:**
+   - Every new feature tested on 2+ demo schools
+   - Verify School A sees only its data
+   - Verify School B doesn't see School A's data
 
 **Outcome:**  
 ✅ Zero data leaks in 15+ months production  
@@ -559,16 +654,19 @@ Ensuring École A cannot access École B's student data required injecting `etab
 ### Challenge 2: Fedapay Webhook Integration
 
 **Problem:**  
-Fedapay sends payment confirmation via webhook. Must:
+Fedapay sends payment confirmation via webhook (HTTP POST). Must:
 - Verify webhook signature (security)
 - Handle idempotency (duplicate webhooks)
-- Activate subscription atomically
+- Activate subscription atomically (race conditions)
 
-**Complexity:** Limited documentation, 5 days trial-and-error.
+**Complexity:**  
+Fedapay documentation limited, required trial-and-error over 5 days.
 
 **Solution:**
 
 ```python
+# etab_billing/views.py (simplified)
+
 @csrf_exempt
 def fedapay_webhook(request):
     # 1. Verify signature
@@ -576,19 +674,32 @@ def fedapay_webhook(request):
     if not verify_signature(request.body, signature, SECRET_KEY):
         return HttpResponse(status=403)
     
-    # 2. Idempotency check
+    # 2. Parse payload
+    data = json.loads(request.body)
     transaction_id = data['transaction']['id']
+    
+    # 3. Idempotency check
     if Subscription.objects.filter(fedapay_transaction_id=transaction_id).exists():
         return HttpResponse(status=200)  # Already processed
     
-    # 3. Atomic activation
+    # 4. Atomic activation
     with transaction.atomic():
-        subscription = Subscription.objects.create(...)
+        subscription = Subscription.objects.create(
+            etablissement=...,
+            plan=...,
+            fedapay_transaction_id=transaction_id,
+            statut='actif'
+        )
         etablissement.is_active = True
         etablissement.save()
     
     return HttpResponse(status=200)
 ```
+
+**Testing:**
+- Sandbox environment (100+ test transactions)
+- Replay attack simulation
+- Duplicate webhook handling
 
 **Outcome:**  
 ✅ 100% successful subscription activations  
@@ -598,15 +709,32 @@ def fedapay_webhook(request):
 
 ### Challenge 3: Academic Year Transitions
 
-**Problem:** Re-enroll 1,000+ students across 50+ classes in <10 minutes.
+**Problem:**  
+When moving from 2024-2025 → 2025-2026:
+- Archive old data (don't delete)
+- Re-enroll students (class promotions)
+- Reset grades/attendance
+- Preserve historical reports
+
+**Complexity:**  
+- 1,000+ students across 50+ classes
+- Must complete in <10 minutes (admin impatience)
+- Cannot lose historical data
 
 **Solution:**
 
 ```python
+# services/reinscription.py
+
 def reinscription_automatique(etablissement, old_year, new_year):
+    """
+    Batch re-enrollment with optimized queries
+    """
     with transaction.atomic():
+        # 1. Bulk fetch all students
         students = Eleve.objects.filter(etablissement=etablissement)
         
+        # 2. Determine new class (promotion logic)
         new_inscriptions = []
         for student in students:
             old_class = student.get_classe_pour_annee(old_year)
@@ -619,8 +747,11 @@ def reinscription_automatique(etablissement, old_year, new_year):
                 etablissement=etablissement
             ))
         
-        # Bulk create (1 query for 1000 students!)
+        # 3. Bulk create (1 query for 1000 students!)
         Inscription.objects.bulk_create(new_inscriptions)
+        
+        # 4. Log operation
+        create_audit_log(etablissement, "Réinscription auto", len(new_inscriptions))
     
     return len(new_inscriptions)
 ```
@@ -628,6 +759,7 @@ def reinscription_automatique(etablissement, old_year, new_year):
 **Optimization:**
 - `bulk_create()` instead of loop → 1000x faster
 - `select_related()` to avoid N+1 queries
+- Progress bar UI (AJAX polling)
 
 **Outcome:**  
 ✅ 1,200 students re-enrolled in 45 seconds  
@@ -640,7 +772,6 @@ def reinscription_automatique(etablissement, old_year, new_year):
 ### Production Usage (as of July 2026)
 
 **User Distribution:**
-
 | Role | Count |
 |------|-------|
 | Students | 1,200+ |
@@ -667,6 +798,7 @@ def reinscription_automatique(etablissement, old_year, new_year):
 - 💰 **15% increase** in fee collection rate
   - Automated payment reminders
   - Online payment convenience
+  - Real-time tracking
 
 **Parent Satisfaction:**
 - 📧 **80%+ email open rate** (grade notifications)
@@ -686,9 +818,9 @@ def reinscription_automatique(etablissement, old_year, new_year):
 - ✅ **<1 second** average response time
 
 **Scalability Proof:**
-- ✅ Handles 50 concurrent users (peak)
-- ✅ Supports 1,200 students/school
-- ✅ PostgreSQL DB: 2GB (15 schools) → Extrapolated 20GB for 100 schools
+- ✅ Handles 50 concurrent users (peak morning login)
+- ✅ Supports 1,200 students/school (tested)
+- ✅ PostgreSQL DB size: 2GB (15 schools) → Extrapolated 20GB for 100 schools
 
 ---
 
@@ -699,13 +831,16 @@ def reinscription_automatique(etablissement, old_year, new_year):
 - [ ] **Complete React migration**
   - Django REST API (90% done)
   - React frontend (60% done)
+  - JWT authentication (done)
   
 - [ ] **SMS notifications**
-  - Twilio integration
+  - Twilio integration (sandbox tested)
   - Automated absence alerts
+  - Payment reminders
 
 - [ ] **Performance monitoring**
   - Sentry error tracking
+  - Query performance analytics
 
 ---
 
@@ -714,29 +849,33 @@ def reinscription_automatique(etablissement, old_year, new_year):
 - [ ] **Flutter mobile app** (parent portal)
   - Offline-first architecture
   - Push notifications
+  - iOS + Android
 
 - [ ] **Microservices extraction**
-  - Auth service
-  - Core service
-  - Finance service
-  - Docker deployment
+  - Auth service (user management, JWT)
+  - Core service (students, teachers, classes)
+  - Finance service (fees, payments, subscriptions)
+  - Docker + docker-compose deployment
 
 - [ ] **Advanced analytics**
   - Student performance trends
+  - Teacher workload distribution
   - Revenue forecasting
 
 - [ ] **2FA for admins**
+  - TOTP (Google Authenticator)
+  - SMS backup codes
 
 ---
 
 ### Long-Term (12+ Months)
 
 - [ ] **Kubernetes orchestration** (if >50 schools)
-- [ ] **Multi-country support**
+- [ ] **Multi-country support** (currency, languages)
 - [ ] **AI-powered features**
   - Student at-risk prediction
   - Automated report comments
-- [ ] **Accounting software integrations**
+- [ ] **Accounting software integrations** (Sage, QuickBooks)
 
 ---
 
@@ -745,13 +884,13 @@ def reinscription_automatique(etablissement, old_year, new_year):
 > **Note:** All screenshots use anonymized data. No real student information is displayed.
 
 ### 1. Login Page
-![Login Screenshot](docs/screenshots/openlabschool-login.png)
+![Login Screenshot](docs/screenshots/login.png)
 *Clean, mobile-friendly authentication with email-based login*
 
 ---
 
 ### 2. Admin Dashboard
-![Dashboard Screenshot](docs/screenshots/openlabschool-dashb.png)
+![Dashboard Screenshot](docs/screenshots/dashboard-admin.png)
 *Real-time statistics: enrollments, payments, attendance, quick actions*
 
 ---
@@ -800,7 +939,7 @@ This project was developed in partnership with **Openlab International** (Niger)
 - ✅ Full system architecture & design
 - ✅ Solo development (backend + frontend)
 - ✅ Database schema design
-- ✅ DevOps & deployment
+- ✅ DevOps & deployment (Render, Cloudinary, etc.)
 - ✅ Payment integration (Fedapay webhook)
 - ✅ Multi-tenant implementation
 - ✅ Performance optimization
@@ -809,6 +948,17 @@ This project was developed in partnership with **Openlab International** (Niger)
 - ✅ Market research & client acquisition
 - ✅ User testing coordination
 - ✅ Sales & onboarding
+
+---
+
+## 📄 Technical Documentation
+
+Detailed docs available in `/docs`:
+- [Database Schema](docs/database-schema.md)
+- [API Documentation](docs/api-documentation.md) (v2.0 REST API)
+- [Multi-Tenant Architecture](docs/multi-tenant-guide.md)
+- [Deployment Guide](docs/deployment.md)
+- [Webhook Integration](docs/fedapay-webhook.md)
 
 ---
 
@@ -825,10 +975,10 @@ Documentation in this repository: MIT License
 
 **For technical discussions or collaboration inquiries:**
 
-- **Developer:** Gabaki Borise Balode
-- **Email:** gborisebalode@gmail.com
-- **LinkedIn:** [linkedin.com/in/g-borise-balode-bgb](https://linkedin.com/in/g-borise-balode-bgb)
-- **Portfolio:** [bgb-portfolio.vercel.app](https://bgb-portfolio.vercel.app)
+- **Developer:** [Your Name]
+- **Email:** [your.email@example.com]
+- **LinkedIn:** [linkedin.com/in/yourprofile]
+- **Portfolio:** [yourportfolio.com]
 
 ---
 
@@ -847,4 +997,6 @@ Screenshots and metrics shown are based on production data but anonymized to pro
 ---
 
 **Last Updated:** July 2026
-```
+
+---
+
