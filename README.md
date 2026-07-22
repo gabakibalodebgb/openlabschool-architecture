@@ -884,13 +884,13 @@ def reinscription_automatique(etablissement, old_year, new_year):
 > **Note:** All screenshots use anonymized data. No real student information is displayed.
 
 ### 1. Login Page
-![Login Screenshot](docs/screenshots/login.png)
+![Login Screenshot](docs/screenshots/openlabschool-login.png)
 *Clean, mobile-friendly authentication with email-based login*
 
 ---
 
 ### 2. Admin Dashboard
-![Dashboard Screenshot](docs/screenshots/dashboard-admin.png)
+![Dashboard Screenshot](docs/screenshots/openlabschool-dashb.png)
 *Real-time statistics: enrollments, payments, attendance, quick actions*
 
 ---
