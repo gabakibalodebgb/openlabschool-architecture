@@ -78,7 +78,7 @@ A **lightweight, affordable SaaS platform** tailored for African educational ins
 
 ✅ **Multi-tenant architecture** - One platform, isolated data per school  
 ✅ **Tiered pricing** - Standard (1,500 FCFA/student/year), Premium (2,500 FCFA/student/year)  
-✅ **Flexible free trial** - 30-day default, configurable per institution for strategic partnerships
+✅ **Flexible free trial** - 30-day default, configurable per institution for strategic partnerships  
 ✅ **Offline-resilient** - Works in low-connectivity environments  
 ✅ **Mobile-first parent portal** - Accessible via smartphones  
 ✅ **Local payment integration** - Fedapay (Mobile Money, cards)  
@@ -202,9 +202,9 @@ A **lightweight, affordable SaaS platform** tailored for African educational ins
 - **Static Files:** WhiteNoise (compressed manifests)
 
 ### Database
-- **RDBMS:** PostgreSQL 14+ (Render managed)
-- **Backup:** Daily automated backups (Render)
-- **Encryption:** At-rest encryption (Render managed)
+- **RDBMS:** PostgreSQL 14+ (`Render` managed)
+- **Backup:** Daily automated backups (`Render`)
+- **Encryption:** At-rest encryption (`Render` managed)
 
 ### Frontend
 - **Current (Monolith):** Django Templates + Bootstrap 5
@@ -241,7 +241,7 @@ A **lightweight, affordable SaaS platform** tailored for African educational ins
 
 #### **Trial Period**
 - ✅ **Default:** 30 days free trial (all features included)
-- ✅ **Configurable:** Admin can extend trial duration per school
+- ✅ **Configurable:** Admin sytem can extend trial duration per school
   - **60 days:** Multi-school pilot programs
   - **90 days:** Government partnerships, large education networks
 - ✅ **Tracking:** One trial per institution (prevents abuse)
@@ -279,11 +279,16 @@ A **lightweight, affordable SaaS platform** tailored for African educational ins
 **Everything in Standard, plus:**
 
 **Financial Management:**
-- ✅ Online tuition payment (Fedapay integration)
-- ✅ Payment schedules & installments
-- ✅ Automated payment reminders
-- ✅ Receipt generation (PDF)
-- ✅ Accounting export (Excel reconciliation)
+- ✅ **Comprehensive fee tracking** (cash, mobile money, check, bank transfer)
+- ✅ **Payment schedules & installments** (custom plans per student)
+- ✅ **Automated payment reminders** (email/SMS to parents)
+- ✅ **Receipt generation** (PDF with school branding)
+- ✅ **Discounts & adjustments** (scholarships, siblings discounts)
+- ✅ **Complete audit trail** (even cancelled payments tracked)
+- ✅ **Accounting reconciliation** (Excel export, multi-currency support)
+- 🔄 **Online payment** (Fedapay integration planned for parent portal)
+
+**Note:** Fedapay currently powers school subscription payments. Student fee online payment coming in mobile app (roadmap).
 
 **Advanced Features:**
 - ✅ Timetable management
@@ -662,11 +667,14 @@ One missed filter = critical data leak.
 
 ### Challenge 2: Fedapay Webhook Integration
 
+**Context:** Fedapay integration powers school subscription payments (schools pay annual fees per student). Student tuition fee online payment planned for mobile app phase 2.
+
 **Problem:**  
 Fedapay sends payment confirmation via webhook (HTTP POST). Must:
 - Verify webhook signature (security)
 - Handle idempotency (duplicate webhooks)
 - Activate subscription atomically (race conditions)
+
 
 **Complexity:**  
 Fedapay documentation limited, required trial-and-error over 5 days.
@@ -713,6 +721,18 @@ def fedapay_webhook(request):
 **Outcome:**  
 ✅ 100% successful subscription activations  
 ✅ Zero payment discrepancies  
+
+### Payments
+- **Gateway:** Fedapay (Sandbox + Production)
+- **Current use:** School subscription payments (Standard/Premium plans)
+- **Methods:** Mobile Money (MTN, Moov, Flooz), Visa/Mastercard
+- **Webhook:** Automated subscription activation (signature verification, idempotency)
+- **Planned:** Student tuition fee online payment (parent portal mobile app)
+
+### Fee Management (Current)
+- **Tracking:** Multi-method (cash, mobile money, checks, bank transfers)
+- **Features:** Installments, discounts, reminders, receipts (PDF), audit logs
+- **Export:** Excel reconciliation, accounting integration-ready
 
 ---
 
@@ -850,6 +870,11 @@ def reinscription_automatique(etablissement, old_year, new_year):
 - [ ] **Performance monitoring**
   - Sentry error tracking
   - Query performance analytics
+
+- [ ] **Fedapay tuition payments** 
+  - Extend Fedapay to student fee payments
+  - Parent-initiated online payments (mobile money)
+  - Real-time payment confirmation
 
 ---
 
