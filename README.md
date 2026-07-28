@@ -308,9 +308,9 @@ Our architecture follows **separation of concerns** with 15 specialized apps:
 | **adminGeneral** | Global admin, school setup, academic years, classes |
 | **authentification** | Login, registration, password management |
 | **scolarite** | Tuition fees, payments, schedules, receipts |
-| **eleve** | Student records, enrollment, profiles |
+| **`eleve`** | Student records, enrollment, profiles |
 | **enseignant** | Teacher management, assignments |
-| **parent** | Parent portal, child linkage, notifications |
+| **`parent`** | Parent portal, child linkage, notifications |
 | **absence** | Attendance tracking, absence reports |
 | **messagesETalertes** | Notification system, alerts |
 | **etab_billing** | School subscriptions, trial management, billing gate |
@@ -528,18 +528,18 @@ def get_students(request):
 
 ### Data Protection
 
-- ✅ **HTTPS enforced** (Render SSL/TLS)
+- ✅ **HTTPS enforced** (`Render` SSL/TLS)
 - ✅ **CSRF protection** (Django middleware)
 - ✅ **SQL injection prevention** (Django ORM parameterized queries)
 - ✅ **XSS protection** (Django template auto-escaping)
-- ✅ **Database encryption at rest** (Render managed PostgreSQL)
+- ✅ **Database encryption at rest** (`Render` managed PostgreSQL)
 - ✅ **Secrets management** (environment variables via python-decouple)
 - ❌ **Rate limiting** (not configured, planned for v2.0)
 
 ### Audit & Compliance
 
 - ✅ **Audit logs** for critical operations (enrollment, grade changes, payments)
-- ✅ **Daily automated backups** (Render PostgreSQL, 7-day retention)
+- ✅ **Daily automated backups** (`Render` PostgreSQL, 7-day retention)
 - ✅ **GDPR-ready** (data export, deletion on request)
 
 ---
@@ -1009,10 +1009,10 @@ Documentation in this repository: MIT License
 
 **For technical discussions or collaboration inquiries:**
 
-- **Developer:** [Your Name]
-- **Email:** [your.email@example.com]
-- **LinkedIn:** [linkedin.com/in/yourprofile]
-- **Portfolio:** [yourportfolio.com]
+- **Developer:** Gabaki Borise Balode - BGB
+- **Email:** gborisebalode@gmail.com
+- **LinkedIn:** [linkedin.com/in/gabakibalodebgb](https://linkedin.com/in/gabakibalodebgb)
+- **Portfolio:** [bgb-portfolio.vercel.app](https://bgb-portfolio.vercel.app)
 
 ---
 
