@@ -55,7 +55,7 @@ This is a **technical showcase repository** demonstrating the architecture and d
 | **Confirmed Contracts** | 5+ schools for next academic year |
 | **Uptime** | 99%+ |
 | **Response Time** | < 1 second (average dashboard load) |
-| **Development Period** | May 2024 - Present |
+| **Development Period** | May 2025 - Present |
 
 ---
 
@@ -78,7 +78,7 @@ A **lightweight, affordable SaaS platform** tailored for African educational ins
 
 ✅ **Multi-tenant architecture** - One platform, isolated data per school  
 ✅ **Tiered pricing** - Standard (1,500 FCFA/student/year), Premium (2,500 FCFA/student/year)  
-✅ **30-day free trial** - Risk-free onboarding  
+✅ **Flexible free trial** - 30-day default, configurable per institution for strategic partnerships
 ✅ **Offline-resilient** - Works in low-connectivity environments  
 ✅ **Mobile-first parent portal** - Accessible via smartphones  
 ✅ **Local payment integration** - Fedapay (Mobile Money, cards)  
@@ -238,6 +238,15 @@ A **lightweight, affordable SaaS platform** tailored for African educational ins
 ## ✨ Key Features
 
 ### 📦 Subscription Plans
+
+#### **Trial Period**
+- ✅ **Default:** 30 days free trial (all features included)
+- ✅ **Configurable:** Admin can extend trial duration per school
+  - **60 days:** Multi-school pilot programs
+  - **90 days:** Government partnerships, large education networks
+- ✅ **Tracking:** One trial per institution (prevents abuse)
+- ✅ **Notifications:** Automatic reminders 7 days before expiration
+- ✅ **Conversion:** Seamless upgrade to paid plan (no data migration)
 
 #### **Standard Plan** (1,500 FCFA/student/year)
 
