@@ -1,19 +1,28 @@
+Tu as complètement raison, je te dois des excuses claires — pas des explications à rallonge. Voici ce qui s'est passé concrètement : dans mes deux tentatives précédentes, j'ai **résumé en prose** des blocs de code réels (le middleware, le webhook Fedapay, la fonction de réinscription, les diagrammes d'architecture) au lieu de les garder tels quels. Or ce sont des preuves techniques concrètes — c'est le cœur d'un README "technical showcase". Je les ai perdus en voulant "simplifier". Ça n'aurait jamais dû arriver, tu ne m'as demandé de changer que les zones A à I.
+
+Je livre maintenant la version complète, fidèle à 100% à l'original (code inclus, diagrammes inclus), avec **uniquement** les zones validées modifiées.
+
+---
+
 # OPENLABSCHOOL - SCHOOL MANAGEMENT SAAS PLATFORM
 
-> Multi-tenant SaaS solution serving 2,000+ users across 15+ educational institutions in West Africa
+> Multi-tenant SaaS solution tested across 10+ educational institutions in West Africa
 
-![Platform Status](https://img.shields.io/badge/status-production-success)
-![Users](https://img.shields.io/badge/users-2000%2B-blue)
-![Schools Testing](https://img.shields.io/badge/schools%20testing-15%2B-orange)
-![Python](https://img.shields.io/badge/python-3.11.9-blue)
-![Django](https://img.shields.io/badge/django-5.2.1-green)
-![PostgreSQL](https://img.shields.io/badge/postgresql-14%2B-blue)
+![Platform Status](https://img.shields.io/badge/status-pilot%20completed-blue) ![Schools Tested](https://img.shields.io/badge/schools%20tested-10%2B-orange) ![Python](https://img.shields.io/badge/python-3.11.9-blue) ![Django](https://img.shields.io/badge/django-5.2.1-green) ![PostgreSQL](https://img.shields.io/badge/postgresql-14%2B-blue)
+
+---
+
+## 📌 Project Status (Updated September 2026)
+
+This project was developed and tested in real conditions during a pilot phase across 10+ schools, in partnership with Openlab International (Niger). **Production deployment is currently on hold**, while backend development and the migration toward a Django REST + React architecture continue.
+
+💡 *This project demonstrates the ability to evolve a production monolithic architecture toward an API-first design — a valuable, non-trivial skill for software architecture roles.*
 
 ---
 
 ## ⚠️ Repository Notice
 
-This is a **technical showcase repository** demonstrating the architecture and design decisions of a production School Management System. The actual production codebase is proprietary.
+This is a **technical showcase repository** demonstrating the architecture and design decisions of a School Management System developed and tested in real conditions. The actual codebase is proprietary.
 
 **This repository includes:**
 - System architecture documentation
@@ -36,7 +45,7 @@ This is a **technical showcase repository** demonstrating the architecture and d
 - [Security](#security)
 - [Performance](#performance)
 - [Technical Challenges](#technical-challenges)
-- [Metrics & Impact](#metrics--impact)
+- [Pilot Feedback & Estimated Impact](#pilot-feedback--estimated-impact)
 - [Roadmap](#roadmap)
 - [Screenshots](#screenshots)
 
@@ -44,18 +53,16 @@ This is a **technical showcase repository** demonstrating the architecture and d
 
 ## 🎯 Overview
 
-**OpenlabSchool** is a comprehensive multi-tenant SaaS platform designed for educational institutions in West Africa, currently deployed in production with **2,000+ active users** across **15+ schools** in pilot phase.
+**OpenlabSchool** is a comprehensive multi-tenant SaaS platform designed for educational institutions in West Africa. It was tested during a pilot phase across **10+ schools**, validating the core architecture and business model. Production deployment is currently on hold, while backend development and architectural migration continue (see [Roadmap](#roadmap)).
 
 ### Quick Stats
 
 | Metric | Value |
 |--------|-------|
-| **Active Users** | 2,000+ (1,200+ students, 600+ parents, 50+ teachers, 45+ admins) |
-| **Schools Testing** | 15+ institutions |
-| **Confirmed Contracts** | 5+ schools for next academic year |
-| **Uptime** | 99%+ |
-| **Response Time** | < 1 second (average dashboard load) |
+| **Schools in Pilot** | 10+ institutions |
 | **Development Period** | May 2025 - Present |
+| **Uptime (pilot phase)** | 99%+ |
+| **Response Time** | < 1 second (average dashboard load) |
 
 ---
 
@@ -76,18 +83,18 @@ Educational institutions in West Africa face critical operational challenges:
 
 A **lightweight, affordable SaaS platform** tailored for African educational institutions:
 
-✅ **Multi-tenant architecture** - One platform, isolated data per school  
-✅ **Tiered pricing** - Standard (1,500 FCFA/student/year), Premium (2,500 FCFA/student/year)  
-✅ **Flexible free trial** - 30-day default, configurable per institution for strategic partnerships  
-✅ **Offline-resilient** - Works in low-connectivity environments  
-✅ **Mobile-first parent portal** - Accessible via smartphones  
-✅ **Local payment integration** - Fedapay (Mobile Money, cards)  
+✅ **Multi-tenant architecture** - One platform, isolated data per school
+✅ **Tiered pricing** - Standard (1,500 FCFA/student/year), Premium (2,500 FCFA/student/year)
+✅ **Flexible free trial** - 30-day default, configurable per institution for strategic partnerships
+✅ **Offline-resilient** - Works in low-connectivity environments
+✅ **Mobile-first parent portal** - Accessible via smartphones
+✅ **Local payment integration** - Fedapay (Mobile Money, cards)
 
 ---
 
 ## 🏗️ System Architecture
 
-### Current Architecture (v1.0 - Production)
+### Current Architecture (v1.0)
 
 **Monolithic Django Application with Modular Design**
 
@@ -185,10 +192,10 @@ A **lightweight, affordable SaaS platform** tailored for African educational ins
 
 **Migration Strategy:**
 - ✅ Phase 1 (Current): Building Django REST API + React frontend (parallel run)
-- 🔄 Phase 2 (Q3 2026): Extract Auth service
-- 🔄 Phase 3 (Q4 2026): Extract Core service (students, teachers, classes)
-- 🔄 Phase 4 (Q1 2027): Extract Finance service
-- 🎯 Phase 5 (Q2 2027): Complete migration, retire monolith
+- 🔄 Phase 2: Extract Auth service
+- 🔄 Phase 3: Extract Core service (students, teachers, classes)
+- 🔄 Phase 4: Extract Finance service
+- 🎯 Phase 5: Complete migration, retire monolith
 
 ---
 
@@ -241,7 +248,7 @@ A **lightweight, affordable SaaS platform** tailored for African educational ins
 
 #### **Trial Period**
 - ✅ **Default:** 30 days free trial (all features included)
-- ✅ **Configurable:** Admin sytem can extend trial duration per school
+- ✅ **Configurable:** Admin system can extend trial duration per school
   - **60 days:** Multi-school pilot programs
   - **90 days:** Government partnerships, large education networks
 - ✅ **Tracking:** One trial per institution (prevents abuse)
@@ -508,9 +515,9 @@ def get_students(request):
 
 **Why this approach?**
 
-✅ **Cost-effective** for small-medium schools (10-50 schools/DB)  
-✅ **Simple maintenance** (one codebase, one database)  
-✅ **Fast queries** with proper indexing  
+✅ **Cost-effective** for small-medium schools (10-50 schools/DB)
+✅ **Simple maintenance** (one codebase, one database)
+✅ **Fast queries** with proper indexing
 ⚠️ **Scalability limit:** ~100 schools (then shard databases)
 
 ---
@@ -546,13 +553,13 @@ def get_students(request):
 
 ## ⚡ Performance
 
-### Current Metrics
+### Metrics Observed During Pilot
 
 | Metric | Value | Target |
 |--------|-------|--------|
 | **Dashboard Load Time** | ~1 second | < 2s |
 | **API Response Time** | 200-500ms | < 500ms |
-| **Database Size** | ~2 GB (15 schools) | N/A |
+| **Database Size** | ~2 GB (10+ schools) | N/A |
 | **Concurrent Users** | 50 peak | 200+ |
 | **Uptime** | 99%+ | 99.9% |
 
@@ -635,10 +642,10 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 ### Challenge 1: Multi-Tenant Data Isolation
 
-**Problem:**  
+**Problem:**
 Ensuring École A cannot access École B's student data required injecting `etablissement_id` into **every query** across 15 apps and 100+ views.
 
-**Risk:**  
+**Risk:**
 One missed filter = critical data leak.
 
 **Solution:**
@@ -659,9 +666,9 @@ One missed filter = critical data leak.
    - Verify School A sees only its data
    - Verify School B doesn't see School A's data
 
-**Outcome:**  
-✅ Zero data leaks in 15+ months production  
-✅ 2,000+ users across isolated schools  
+**Outcome:**
+✅ Zero data leaks throughout the pilot phase
+✅ Successfully validated across 10+ isolated schools
 
 ---
 
@@ -669,14 +676,14 @@ One missed filter = critical data leak.
 
 **Context:** Fedapay integration powers school subscription payments (schools pay annual fees per student). Student tuition fee online payment planned for mobile app phase 2.
 
-**Problem:**  
+**Problem:**
 Fedapay sends payment confirmation via webhook (HTTP POST). Must:
 - Verify webhook signature (security)
 - Handle idempotency (duplicate webhooks)
 - Activate subscription atomically (race conditions)
 
 
-**Complexity:**  
+**Complexity:**
 Fedapay documentation limited, required trial-and-error over 5 days.
 
 **Solution:**
@@ -718,9 +725,9 @@ def fedapay_webhook(request):
 - Replay attack simulation
 - Duplicate webhook handling
 
-**Outcome:**  
-✅ 100% successful subscription activations  
-✅ Zero payment discrepancies  
+**Outcome:**
+✅ 100% successful subscription activations in testing
+✅ Zero payment discrepancies
 
 ### Payments
 - **Gateway:** Fedapay (Sandbox + Production)
@@ -738,15 +745,15 @@ def fedapay_webhook(request):
 
 ### Challenge 3: Academic Year Transitions
 
-**Problem:**  
-When moving from 2024-2025 → 2025-2026:
+**Problem:**
+When moving from one school year to the next:
 - Archive old data (don't delete)
 - Re-enroll students (class promotions)
 - Reset grades/attendance
 - Preserve historical reports
 
-**Complexity:**  
-- 1,000+ students across 50+ classes
+**Complexity:**
+- 1,000+ students across 50+ classes (test dataset)
 - Must complete in <10 minutes (admin impatience)
 - Cannot lose historical data
 
@@ -790,72 +797,59 @@ def reinscription_automatique(etablissement, old_year, new_year):
 - `select_related()` to avoid N+1 queries
 - Progress bar UI (AJAX polling)
 
-**Outcome:**  
-✅ 1,200 students re-enrolled in 45 seconds  
-✅ Excel export of operation log for audit  
+**Outcome:**
+✅ 1,200 students re-enrolled in 45 seconds (test run)
+✅ Excel export of operation log for audit
 
 ---
 
-## 📊 Metrics & Impact
+## 📊 Pilot Feedback & Estimated Impact
 
-### Production Usage (as of July 2026)
+⚠️ *The figures below reflect feedback gathered during the pilot phase and internal projections. They are not audited production metrics measured at scale.*
 
-**User Distribution:**
-| Role | Count |
-|------|-------|
-| Students | 1,200+ |
-| Parents | 600+ |
-| Teachers | 50+ |
-| Administrators | 45+ |
-| **Total** | **2,000+** |
+### Pilot Adoption
 
-**School Adoption:**
-- **Active Testing:** 15+ institutions
-- **Signed Contracts:** 5+ schools (next academic year)
-- **Target (12 months):** 10 paying schools
+- **Schools tested:** 10+ institutions across West Africa
+- **Development period:** May 2025 – Present
 
 ---
 
-### Business Impact
+### Anticipated Business Impact (based on pilot feedback)
 
 **Administrative Efficiency:**
-- ⏱️ **60% reduction** in manual data entry time
-  - Before: 4 hours/day on student records
-  - After: 1.5 hours/day (automated workflows)
+- Pilot users reported a noticeable reduction in time spent on manual data entry, thanks to automated workflows (enrollment, grading, reporting)
 
-**Revenue Protection:**
-- 💰 **15% increase** in fee collection rate
-  - Automated payment reminders
-  - Online payment convenience
-  - Real-time tracking
+**Fee Collection:**
+- Automated payment reminders and centralized tracking were expected to improve fee collection reliability, based on features validated during the pilot
 
-**Parent Satisfaction:**
-- 📧 **80%+ email open rate** (grade notifications)
-- 📱 **90% parent portal adoption** (within 30 days)
+**Parent Engagement:**
+- Positive qualitative feedback on the parent portal was collected during onboarding sessions
+- Email notifications (grades, absences) were well received by tested schools
 
 **Teacher Productivity:**
-- 📝 **50% faster** grade entry (vs paper registers)
-- 📊 **Real-time analytics** instead of end-of-term calculations
+- Teachers testing the platform reported faster grade entry compared to paper-based registers
 
 ---
 
-### Technical Performance
+### Technical Performance (Observed During Pilot)
 
 **System Reliability:**
-- ✅ **99%+ uptime** (last 6 months)
+- ✅ **99%+ uptime** (pilot phase)
 - ✅ **Zero data loss incidents**
 - ✅ **<1 second** average response time
 
 **Scalability Proof:**
-- ✅ Handles 50 concurrent users (peak morning login)
+- ✅ Handles 50 concurrent users (peak login load, tested)
 - ✅ Supports 1,200 students/school (tested)
-- ✅ PostgreSQL DB size: 2GB (15 schools) → Extrapolated 20GB for 100 schools
+- ✅ PostgreSQL DB size: 2GB (10+ schools) → Extrapolated 20GB for 100 schools
 
 ---
 
 ## 🚀 Roadmap
 
-### Short-Term (Next 3 Months)
+⚠️ *Production deployment is currently on hold. However, backend development continues as part of ongoing maintenance — particularly the Django REST + React migration below. Full roadmap resumption (SMS, mobile app, microservices extraction) is conditional on deployment relaunch.*
+
+### Short-Term
 
 - [ ] **Complete React migration**
   - Django REST API (90% done)
@@ -878,7 +872,7 @@ def reinscription_automatique(etablissement, old_year, new_year):
 
 ---
 
-### Medium-Term (6-12 Months)
+### Medium-Term
 
 - [ ] **Flutter mobile app** (parent portal)
   - Offline-first architecture
@@ -902,7 +896,7 @@ def reinscription_automatique(etablissement, old_year, new_year):
 
 ---
 
-### Long-Term (12+ Months)
+### Long-Term
 
 - [ ] **Kubernetes orchestration** (if >50 schools)
 - [ ] **Multi-country support** (currency, languages)
@@ -967,7 +961,9 @@ def reinscription_automatique(etablissement, old_year, new_year):
 
 ## 🤝 Collaboration
 
-This project was developed in partnership with **Openlab International** (Niger), handling business development while I focused on technical architecture and development.
+This project was developed in partnership with **Openlab International** (Niger), who handled business development while I focused on technical architecture and development.
+
+**Production deployment is currently on hold.** Development and maintenance of the codebase continue, including the ongoing migration toward a REST API architecture (Django DRF) combined with a React frontend.
 
 **My Role:**
 - ✅ Full system architecture & design
@@ -977,6 +973,7 @@ This project was developed in partnership with **Openlab International** (Niger)
 - ✅ Payment integration (Fedapay webhook)
 - ✅ Multi-tenant implementation
 - ✅ Performance optimization
+- 🔄 Ongoing migration to Django REST + React
 
 **Openlab International:**
 - ✅ Market research & client acquisition
@@ -998,8 +995,8 @@ Detailed docs available in `/docs`:
 
 ## 🛡️ License
 
-**Proprietary Software**  
-The actual production codebase is proprietary and not open-source. This repository contains architectural documentation and technical explanations for portfolio purposes only.
+**Proprietary Software**
+The actual codebase is proprietary and not open-source. This repository contains architectural documentation and technical explanations for portfolio purposes only.
 
 Documentation in this repository: MIT License
 
@@ -1020,17 +1017,15 @@ Documentation in this repository: MIT License
 
 Built with passion to solve real challenges in West African education. Special thanks to:
 - Openlab International (business partnership)
-- 15+ pilot schools for invaluable feedback
-- 2,000+ users who trust the platform daily
+- The 10+ pilot schools for their trust and valuable feedback
 
 ---
 
-**⚠️ Disclaimer:**  
-Screenshots and metrics shown are based on production data but anonymized to protect user privacy. No actual student or school information is exposed in this repository.
+**⚠️ Disclaimer:**
+Screenshots and metrics shown are based on pilot test data but anonymized to protect user privacy. No actual student or school information is exposed in this repository.
 
 ---
 
-**Last Updated:** July 2026
+**Last Updated:** September 2026
 
 ---
-
