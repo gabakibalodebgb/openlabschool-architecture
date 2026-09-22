@@ -1,9 +1,3 @@
-Tu as complètement raison, je te dois des excuses claires — pas des explications à rallonge. Voici ce qui s'est passé concrètement : dans mes deux tentatives précédentes, j'ai **résumé en prose** des blocs de code réels (le middleware, le webhook Fedapay, la fonction de réinscription, les diagrammes d'architecture) au lieu de les garder tels quels. Or ce sont des preuves techniques concrètes — c'est le cœur d'un README "technical showcase". Je les ai perdus en voulant "simplifier". Ça n'aurait jamais dû arriver, tu ne m'as demandé de changer que les zones A à I.
-
-Je livre maintenant la version complète, fidèle à 100% à l'original (code inclus, diagrammes inclus), avec **uniquement** les zones validées modifiées.
-
----
-
 # OPENLABSCHOOL - SCHOOL MANAGEMENT SAAS PLATFORM
 
 > Multi-tenant SaaS solution tested across 10+ educational institutions in West Africa
@@ -340,9 +334,7 @@ Etablissement (School/Institution)
 ├── id
 ├── nom (name)
 ├── is_active (active status)
-├── trial_consumed_at (trial tracking)
-├── trial_days (default: 30)
-└── created_at, updated_at
+├── ...
 
 -- User Management
 CustomUser (extends Django AbstractUser)
@@ -358,10 +350,7 @@ CustomUser (extends Django AbstractUser)
 AnneeScolaire (School Year)
 ├── id
 ├── etablissement_id (FK)
-├── annee_debut (e.g., 2024)
-├── annee_fin (e.g., 2025)
-├── active (boolean, only one active per school)
-└── created_by (FK → CustomUser)
+├── ...
 
 Cycle (e.g., Primary, Secondary)
 ├── id
@@ -371,17 +360,12 @@ Cycle (e.g., Primary, Secondary)
 Niveau (e.g., 6th Grade, CM2)
 ├── id
 ├── etablissement_id (FK)
-├── cycle_id (FK)
-├── nom
-└── ordre_global (sorting order)
+├── ...
 
 Classe (Class/Section)
 ├── id
 ├── etablissement_id (FK)
-├── niveau_id (FK → Niveau)
-├── annee_scolaire_id (FK → AnneeScolaire)
-├── nom (e.g., "A", "B", "C")
-└── UNIQUE(nom, niveau, annee_scolaire, etablissement)
+├── ...
 
 -- Student Management
 Eleve (Student)
@@ -390,21 +374,16 @@ Eleve (Student)
 ├── etablissement_id (FK)
 ├── matricule (student ID, auto-generated "ELV12345")
 ├── matricule_saisi (manual override if provided)
-├── cycle_id (FK → Cycle)
-├── date_naissance, lieu_naissance
-├── sexe (M|F)
-├── nationalite
 ├── photo (Cloudinary)
-└── code_parent (6-digit code for parent linkage)
+├── code_parent (6-digit code for parent linkage)
+├── ...
+
 
 Inscription (Enrollment)
 ├── id
 ├── eleve_id (FK → Eleve)
-├── classe_id (FK → Classe)
-├── annee_scolaire_id (FK → AnneeScolaire)
 ├── etablissement_id (FK)
-├── date_inscription
-└── UNIQUE(eleve, annee_scolaire)
+├── ...
 
 -- Parent Management
 Parent
@@ -412,7 +391,7 @@ Parent
 ├── user_id (OneToOne → CustomUser)
 ├── etablissement_id (FK)
 ├── enfants (ManyToMany → Eleve)
-└── telephone
+└── ...
 
 -- Teacher Management
 Enseignant (Teacher)
@@ -420,16 +399,11 @@ Enseignant (Teacher)
 ├── user_id (OneToOne → CustomUser)
 ├── etablissement_id (FK)
 ├── statut (permanent|contractual)
-├── grade
-└── telephone
+├── ...
 
 AffectationEnseignant (Teacher Assignment)
 ├── id
-├── enseignant_id (FK → Enseignant)
-├── classe_id (FK → Classe)
-├── matiere_id (FK → Matiere)
-├── role (PP=Prof Principal | CO=Co-teacher)
-└── volume_horaire_hebdo
+├── ...
 ```
 
 ### Critical Indexes (Performance Optimization)
