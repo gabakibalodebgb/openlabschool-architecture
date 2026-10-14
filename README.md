@@ -8,7 +8,11 @@
 
 ## 📌 Project Status (Updated September 2026)
 
-This project was developed and tested in real conditions during a pilot phase across 10+ schools, in partnership with Openlab International (Niger). **Production deployment is currently on hold**, while backend development and the migration toward a Django REST + React architecture continue.
+This project was developed and tested in real conditions during a pilot phase 
+across 10+ schools. The pilot was initially supported by a business development 
+partnership (Openlab International, Niger), which has since ended. The codebase 
+is independently owned and continues to evolve (ongoing migration toward a 
+Django REST + React architecture).
 
 💡 *This project demonstrates the ability to evolve a production monolithic architecture toward an API-first design — a valuable, non-trivial skill for software architecture roles.*
 
@@ -933,13 +937,13 @@ def reinscription_automatique(etablissement, old_year, new_year):
 
 ---
 
-## 🤝 Collaboration
+## 🤝 Project History
 
-This project was developed in partnership with **Openlab International** (Niger), who handled business development while I focused on technical architecture and development.
+During the pilot phase, business development (market research, client 
+acquisition, onboarding) was handled through a partnership with Openlab 
+International (Niger). This partnership has since ended.
 
-**Production deployment is currently on hold.** Development and maintenance of the codebase continue, including the ongoing migration toward a REST API architecture (Django DRF) combined with a React frontend.
-
-**My Role:**
+**My role covered the entire technical scope:**
 - ✅ Full system architecture & design
 - ✅ Solo development (backend + frontend)
 - ✅ Database schema design
@@ -949,10 +953,8 @@ This project was developed in partnership with **Openlab International** (Niger)
 - ✅ Performance optimization
 - 🔄 Ongoing migration to Django REST + React
 
-**Openlab International:**
-- ✅ Market research & client acquisition
-- ✅ User testing coordination
-- ✅ Sales & onboarding
+Production deployment is currently on hold while development and maintenance 
+continue.
 
 ---
 
@@ -989,9 +991,9 @@ Documentation in this repository: MIT License
 
 ## 🙏 Acknowledgments
 
-Built with passion to solve real challenges in West African education. Special thanks to:
-- Openlab International (business partnership)
-- The 10+ pilot schools for their trust and valuable feedback
+Built with passion to solve real challenges in West African education. 
+Special thanks to:
+- The 10+ pilot schools for their trust and valuable feedback during the pilot phase
 
 ---
 
